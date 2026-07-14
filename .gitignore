@@ -1,0 +1,73 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / Next.js
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel/
+
+# Local database / runtime artifacts
+*.sqlite
+*.sqlite3
+*.db
+*.pid
+
+# Secrets and certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
