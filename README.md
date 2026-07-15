@@ -17,39 +17,21 @@ It is useful for product strategy rehearsal, organizational decision simulation,
 - Stores logs, events, memories, interventions, reports, and chat records independently for each run.
 - Supports god-mode interventions, pause and resume, structured reports, one-on-one character chat, Report Agent Q&A, and multi-agent group chat.
 
+## Demo Replay Mode
+
+Experience the hosted demo site: [https://xiaoxuz.github.io/SoulSim/](https://xiaoxuz.github.io/SoulSim/)
+
+The demo site replays a built-in completed world and simulates API responses and streaming events in the browser. It is intended for quickly trying the full SoulSim workflow without a backend, database, or LLM service.
+
 ## 5-Step Workflow
 
-### Step 1: Enter A Seed
-
-Enter the world background, simulation goal, number of agents, and simulation days.
-
-![Step 1 seed input](docs/assets/step1.jpg)
-
-### Step 2: Build The World
-
-The system automatically generates the world background, agent profiles, and knowledge graph, then shows the simulation run list for that world.
-
-![Step 2 world build result and run list](docs/assets/step2.jpg)
-
-### Step 3: Run The Simulation
-
-Agents act day by day. The frontend displays simulation logs, stage status, and timeline updates through SSE.
-
-![Step 3 multi-agent simulation logs](docs/assets/step3.jpg)
-
-### Step 4: Generate A Report
-
-Generate a structured report for the selected run, including narrative recap, executive summary, goal assessment, character perspectives, relationship changes, metric changes, key drivers, and evidence mapping.
-
-![Step 4 structured report](docs/assets/step4.jpg)
-
-### Step 5: Explore Further
-
-Continue asking questions based on the selected run through one-on-one character chat, Report Agent chat, or multi-agent group chat.
-
-![Step 5 character and report interaction](docs/assets/step5-1.jpg)
-
-![Step 5 multi-agent group chat](docs/assets/step5-2.jpg)
+| Step | What Happens | Preview |
+| --- | --- | --- |
+| 1. Enter a seed | Set the world background, simulation goal, agent count, and simulation days. | <img src="docs/assets/step1.jpg" alt="Step 1 seed input" width="220"> |
+| 2. Build the world | Generate the world background, agent profiles, knowledge graph, and run list. | <img src="docs/assets/step2.jpg" alt="Step 2 world build result and run list" width="220"> |
+| 3. Run the simulation | Watch agents act day by day through streamed logs, stage status, and timeline updates. | <img src="docs/assets/step3.jpg" alt="Step 3 multi-agent simulation logs" width="220"> |
+| 4. Generate a report | Produce a structured report with narrative, goal assessment, perspectives, metrics, drivers, and evidence. | <img src="docs/assets/step4.jpg" alt="Step 4 structured report" width="220"> |
+| 5. Explore further | Continue with one-on-one character chat, Report Agent Q&A, or multi-agent group chat. | <img src="docs/assets/step5-1.jpg" alt="Step 5 character and report interaction" width="160"> <img src="docs/assets/step5-2.jpg" alt="Step 5 multi-agent group chat" width="160"> |
 
 ## Architecture Overview
 
@@ -137,14 +119,7 @@ npm install
 ### 3. Initialize The Database
 
 ```bash
-psql "$DATABASE_URL" -f backend/sql/schema.sql
-psql "$DATABASE_URL" -f backend/sql/m4_chat.sql
-psql "$DATABASE_URL" -f backend/sql/m5_intervention.sql
-psql "$DATABASE_URL" -f backend/sql/m6_goal_progress.sql
-psql "$DATABASE_URL" -f backend/sql/m7_chat_messages_cascade.sql
-psql "$DATABASE_URL" -f backend/sql/m8_report_goal_assessment.sql
-psql "$DATABASE_URL" -f backend/sql/m9_events_event_type.sql
-psql "$DATABASE_URL" -f backend/sql/m10_world_baselines.sql
+psql "$DATABASE_URL" -f backend/sql/init.sql
 ```
 
 ### 4. Start Services
@@ -188,16 +163,12 @@ logs/backend.log
 logs/frontend.log
 ```
 
-### Demo Replay Mode
-
-To publish or preview a frontend-only experience site, run the frontend with demo mode enabled:
+To preview the frontend-only demo site locally, run the frontend with demo mode enabled:
 
 ```bash
 cd frontend
 NEXT_PUBLIC_DEMO_MODE=1 npm run dev -- --hostname 0.0.0.0
 ```
-
-In demo mode, the workbench replays a built-in completed world and simulates API responses and streaming events in the browser. It does not require the backend, database, or LLM service.
 
 ## Important APIs
 

@@ -175,6 +175,25 @@ export default function Home() {
             在任意时刻以「上帝视角」介入，观察群体如何在你的设定下演化出你意料之外的故事。
           </p>
 
+          {isDemoMode && (
+            <div
+              className="hero-rise-2 mt-6 max-w-2xl"
+              style={{
+                border: "1px solid rgba(251,191,36,0.24)",
+                background: "rgba(251,191,36,0.07)",
+                borderRadius: 8,
+                padding: "12px 14px",
+              }}
+            >
+              <p className="text-xs" style={{ color: "var(--accent-amber)", fontFamily: "var(--font-chakra)", letterSpacing: "0.08em" }}>
+                DEMO EXPERIENCE SITE
+              </p>
+              <p className="text-sm mt-1 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                这是一个功能体验 Demo，所有世界、推演日志、报告和对话均为预生成数据；页面会模拟后端和流式生成过程，用于快速体验 SoulSim 的完整工作流。
+              </p>
+            </div>
+          )}
+
           <div className="mt-10 flex items-center gap-4 hero-rise-3">
             <Link href="/worlds/new" className="btn-primary" style={{ padding: "12px 24px" }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

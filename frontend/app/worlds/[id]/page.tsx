@@ -1072,9 +1072,14 @@ export default function WorldWorkbench() {
                     <h2 className="step-title text-gradient">创建新世界</h2>
                     <p className="step-subtitle">输入世界设定、推演目标和初始材料，系统会生成知识图谱与具备独立立场的 Agent。</p>
                     {demoStepOneLocked && (
-                      <p className="text-xs mt-3" style={{ color: "var(--accent-amber)", fontFamily: "var(--font-chakra)", letterSpacing: "0.04em" }}>
-                        DEMO DATA LOCKED · 体验站将使用这组已完成推演数据回放完整流程
-                      </p>
+                      <div className="analysis-panel mt-4" style={{ borderLeftColor: "var(--accent-amber)", background: "rgba(251,191,36,0.06)" }}>
+                        <p className="text-xs" style={{ color: "var(--accent-amber)", fontFamily: "var(--font-chakra)", letterSpacing: "0.08em" }}>
+                          DEMO DATA LOCKED
+                        </p>
+                        <p className="text-sm mt-1 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                          当前为功能体验 Demo。表单已锁定为一组真实完成过的预生成案例，后续构建、推演、报告和聊天都会在前端回放模拟，不会创建真实数据，也不会调用后端或 LLM。
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
