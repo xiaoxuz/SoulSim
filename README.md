@@ -23,6 +23,10 @@ Experience the hosted demo site: [https://xiaoxuz.github.io/SoulSim/](https://xi
 
 The demo site replays a built-in completed world and simulates API responses and streaming events in the browser. It is intended for quickly trying the full SoulSim workflow without a backend, database, or LLM service.
 
+Demo walkthrough recording: [docs/assets/demo-replay.mp4](docs/assets/demo-replay.mp4)
+
+<video src="docs/assets/demo-replay.mp4" controls width="720"></video>
+
 ## 5-Step Workflow
 
 | Step | What Happens | Preview |
