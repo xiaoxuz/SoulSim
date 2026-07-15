@@ -25,9 +25,7 @@ The demo site replays a built-in completed world and simulates API responses and
 
 Demo walkthrough recording:
 
-<video controls width="720">
-  <source src="docs/assets/demo-replay.mp4" type="video/mp4">
-</video>
+<video src="./docs/assets/demo-replay.mp4" controls width="720"></video>
 
 ## 5-Step Workflow
 
