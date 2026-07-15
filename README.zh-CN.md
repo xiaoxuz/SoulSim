@@ -188,6 +188,17 @@ logs/backend.log
 logs/frontend.log
 ```
 
+### Demo 回放模式
+
+如果要发布或预览一个只依赖前端的体验站，可开启 Demo 模式启动前端：
+
+```bash
+cd frontend
+NEXT_PUBLIC_DEMO_MODE=1 npm run dev -- --hostname 0.0.0.0
+```
+
+Demo 模式会在浏览器内回放一个内置的已完成世界，并模拟 API 响应和流式事件，不需要后端、数据库或 LLM 服务。
+
 ## 重要 API
 
 World：

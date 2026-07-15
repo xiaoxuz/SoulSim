@@ -188,6 +188,17 @@ logs/backend.log
 logs/frontend.log
 ```
 
+### Demo Replay Mode
+
+To publish or preview a frontend-only experience site, run the frontend with demo mode enabled:
+
+```bash
+cd frontend
+NEXT_PUBLIC_DEMO_MODE=1 npm run dev -- --hostname 0.0.0.0
+```
+
+In demo mode, the workbench replays a built-in completed world and simulates API responses and streaming events in the browser. It does not require the backend, database, or LLM service.
+
 ## Important APIs
 
 World:

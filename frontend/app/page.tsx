@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { api } from "@/lib/api";
+import { api, isDemoMode } from "@/lib/api";
 
 type World = {
   world_id: string;
@@ -158,6 +158,7 @@ export default function Home() {
             >
               SOULSIM // MULTI-AGENT WORLD SIMULATION
             </span>
+            {isDemoMode && <span className="tag tag-amber">DEMO REPLAY</span>}
           </div>
 
           <h1 className="hero-title hero-rise-1" style={{ fontSize: "clamp(48px, 7vw, 92px)" }}>

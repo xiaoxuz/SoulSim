@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:demo": "NEXT_PUBLIC_DEMO_MODE=1 next build",
     "start": "next start"
   },
   "dependencies": {

@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { api } from "@/lib/api";
+import { api, apiFetch, isDemoMode } from "@/lib/api";
 import { buildExportHtml } from "@/lib/exportHtml";
 import { KnowledgeGraph, graphColor, type GraphStats } from "@/components/KnowledgeGraph";
 import { StepIndicator } from "@/components/StepIndicator";
@@ -271,6 +271,18 @@ export default function WorldWorkbench() {
   // --- 回填 Step 1 表单：已存在的世界点回 Step 1 时显示原提交参数 ---
   const formHydratedRef = useRef(false);
   useEffect(() => {
+    if (isDemoMode && isNew && !formHydratedRef.current) {
+      formHydratedRef.current = true;
+      api.getWorld(id).then((w: any) => {
+        setTitle(w.title || "");
+        setGoal(w.simulation_goal || "");
+        setSeed(w.seed_material || "");
+        setAgentCount(w.world_protocol?.agent_count || 5);
+        setSimDays(w.world_protocol?.simulation_days || 3);
+        setInterventionEnabled(Boolean(w.intervention_mode?.enabled));
+      }).catch(() => {});
+      return;
+    }
     if (isNew || !world || formHydratedRef.current) return;
     formHydratedRef.current = true;
     if (world.title) setTitle(world.title);
@@ -455,7 +467,7 @@ export default function WorldWorkbench() {
     setSelectedRun({ status: "running", raw_log: [], total_steps: 0 });
 
     const url = api.startRunStream(id);
-    fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) }).then(async (res) => {
+    apiFetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) }).then(async (res) => {
       if (!res.ok || !res.body) { alert("启动失败"); setActionLoading(false); setStreamingRun(false); return; }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -566,7 +578,7 @@ export default function WorldWorkbench() {
     setActionLoading(true);
     setStreamingRun(true);
     setLogs(prev => [...prev, `[intervention] 连接恢复流...`]);
-    fetch(api.resumeRunStreamUrl(rid)).then(async (res) => {
+    apiFetch(api.resumeRunStreamUrl(rid)).then(async (res) => {
       if (!res.ok || !res.body) { alert("恢复失败"); setActionLoading(false); setStreamingRun(false); return; }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -661,7 +673,7 @@ export default function WorldWorkbench() {
     }
 
     const url = api.makeReportStreamUrl(runId);
-    fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) }).then(async (res) => {
+    apiFetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) }).then(async (res) => {
       if (!res.ok || !res.body) { alert("启动报告生成失败"); setReportGenerating(false); setActionLoading(false); return; }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -835,7 +847,7 @@ export default function WorldWorkbench() {
     setGroupStreamCount(prev => prev + 1);
 
     const url = api.sendGroupMessageStreamUrl(activeGroupSessionId);
-    fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: msg }) }).then(async (res) => {
+    apiFetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: msg }) }).then(async (res) => {
       if (!res.ok || !res.body) { setGroupStreamCount(prev => Math.max(0, prev - 1)); return; }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -920,6 +932,7 @@ export default function WorldWorkbench() {
   });
   const protocol = (world?.world_protocol || {}) as any;
   const worldId = isNew ? "" : id;
+  const demoStepOneLocked = isDemoMode && isNew;
 
   // maxReached: 用户已实际到达的最高步骤（回看时 StepIndicator 保持已完成样式）
   const maxReached = (() => {
@@ -1058,24 +1071,29 @@ export default function WorldWorkbench() {
                     <p className="step-kicker">WORLD CREATION</p>
                     <h2 className="step-title text-gradient">创建新世界</h2>
                     <p className="step-subtitle">输入世界设定、推演目标和初始材料，系统会生成知识图谱与具备独立立场的 Agent。</p>
+                    {demoStepOneLocked && (
+                      <p className="text-xs mt-3" style={{ color: "var(--accent-amber)", fontFamily: "var(--font-chakra)", letterSpacing: "0.04em" }}>
+                        DEMO DATA LOCKED · 体验站将使用这组已完成推演数据回放完整流程
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="reading-section">
                   <div className="grid gap-4">
                     <div>
                       <label className="label block" style={{ fontFamily: "var(--font-chakra)" }}>WORLD NAME</label>
-                      <input value={title} onChange={e => setTitle(e.target.value)} required placeholder="如：社区舆论演化" />
+                      <input value={title} onChange={e => setTitle(e.target.value)} required disabled={demoStepOneLocked} placeholder="如：社区舆论演化" />
                     </div>
                     <div>
                       <label className="label block" style={{ fontFamily: "var(--font-chakra)" }}>SIMULATION GOAL</label>
-                      <input value={goal} onChange={e => setGoal(e.target.value)} required placeholder="如：在 5 天内，谣言会因权威澄清而衰减" />
+                      <input value={goal} onChange={e => setGoal(e.target.value)} required disabled={demoStepOneLocked} placeholder="如：在 5 天内，谣言会因权威澄清而衰减" />
                       <p className="text-xs mt-2" style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>
                         建议写成可证伪命题，如「在 X 条件下，A 会在 N 天内发生变化」，而不是只写「观察 A 与 B 的关系」。
                       </p>
                     </div>
                     <div>
                       <label className="label block" style={{ fontFamily: "var(--font-chakra)" }}>SEED MATERIAL</label>
-                      <textarea value={seed} onChange={e => setSeed(e.target.value)} required rows={9} placeholder="描述世界的背景设定、关键角色、初始条件..." />
+                      <textarea value={seed} onChange={e => setSeed(e.target.value)} required disabled={demoStepOneLocked} rows={9} placeholder="描述世界的背景设定、关键角色、初始条件..." />
                     </div>
                   </div>
                 </div>
@@ -1083,7 +1101,7 @@ export default function WorldWorkbench() {
                   <div>
                     <label className="label block" style={{ fontFamily: "var(--font-chakra)" }}>AGENT COUNT</label>
                     <div className="choice-grid mt-2">{[3, 5, 8, 10].map(n => (
-                      <button key={n} type="button" onClick={() => setAgentCount(n)} className={`choice-card ${agentCount === n ? "choice-card-active" : ""}`}>
+                      <button key={n} type="button" disabled={demoStepOneLocked} onClick={() => setAgentCount(n)} className={`choice-card ${agentCount === n ? "choice-card-active" : ""}`}>
                         <span className="choice-value">{n}</span>
                         <span className="choice-label">Agents</span>
                       </button>
@@ -1092,7 +1110,7 @@ export default function WorldWorkbench() {
                   <div>
                     <label className="label block" style={{ fontFamily: "var(--font-chakra)" }}>SIMULATION DAYS</label>
                     <div className="choice-grid mt-2">{[3, 5, 7, 10].map(n => (
-                      <button key={n} type="button" onClick={() => setSimDays(n)} className={`choice-card ${simDays === n ? "choice-card-active" : ""}`}>
+                      <button key={n} type="button" disabled={demoStepOneLocked} onClick={() => setSimDays(n)} className={`choice-card ${simDays === n ? "choice-card-active" : ""}`}>
                         <span className="choice-value">{n}</span>
                         <span className="choice-label">Days</span>
                       </button>
@@ -1109,6 +1127,7 @@ export default function WorldWorkbench() {
                     </div>
                     <button
                       type="button"
+                      disabled={demoStepOneLocked}
                       onClick={() => setInterventionEnabled(!interventionEnabled)}
                       style={{
                         width: 44, height: 24, borderRadius: 12, border: "1px solid var(--border)",

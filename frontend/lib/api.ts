@@ -1,6 +1,14 @@
+import { demoApi, demoFetch } from "./demoApi";
+
+export const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+
 const BASE =
   process.env.NEXT_PUBLIC_API_BASE ||
   (typeof window !== "undefined" ? `http://${window.location.hostname}:8000/api` : "http://localhost:8000/api");
+
+export function apiFetch(input: string | URL | Request, init?: RequestInit) {
+  return isDemoMode ? demoFetch(input, init) : fetch(input, init);
+}
 
 async function req(path: string, opts?: RequestInit) {
   const res = await fetch(`${BASE}${path}`, {
@@ -11,7 +19,7 @@ async function req(path: string, opts?: RequestInit) {
   return res.json();
 }
 
-export const api = {
+const realApi = {
   listWorlds: () => req("/worlds"),
   createWorld: (title: string) =>
     req("/worlds", { method: "POST", body: JSON.stringify({ title }) }),
@@ -107,3 +115,5 @@ export const api = {
   adminDelete: (table: string, id: string) =>
     req(`/admin/${table}/${id}`, { method: "DELETE" }),
 };
+
+export const api = isDemoMode ? demoApi : realApi;
