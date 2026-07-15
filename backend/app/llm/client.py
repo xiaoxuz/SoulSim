@@ -19,7 +19,7 @@ def _build_model():
         model_type=settings.llm_model,
         url=settings.llm_base_url,
         api_key=settings.llm_api_key,
-        model_config_dict={"temperature": 0.7},
+        model_config_dict={"temperature": 0.7,  "extra_body": {"reasoning": {"enabled": False}}},
     )
 
 

@@ -1,78 +1,80 @@
 # SoulSim
 
-SoulSim 是一个多 Agent 社会模拟工作台：输入一个复杂议题，它会生成一个可运行的世界，让不同立场、目标和性格的角色在同一时空中连续互动、冲突、协商和演化，最终产出可追踪的过程日志、结构化报告和可继续追问的深度互动。
+[English](README.md) | [中文](README.zh-CN.md)
 
-它适合用于产品策略预演、组织决策推演、舆情传播模拟、剧本与世界观创作，以及多 Agent 社会行为研究。
+SoulSim is a multi-agent social simulation workspace. Give it a complex topic, and it builds a runnable world where agents with different positions, goals, and personalities interact, conflict, negotiate, and evolve in the same timeline. The system produces traceable process logs, structured reports, and follow-up conversations for deeper exploration.
 
-![SoulSim 首页](docs/assets/index.jpg)
+It is useful for product strategy rehearsal, organizational decision simulation, public-opinion propagation modeling, story and worldbuilding, and multi-agent social behavior research.
 
-## 核心能力
+![SoulSim home](docs/assets/index.jpg)
 
-- 从世界种子自动构建模拟场景、角色档案和知识图谱。
-- 支持粘贴 `SKILL.md` 形式的灵魂配置，增强 Agent 的人格一致性。
-- 多 Agent 按天感知事件、思考、发言、行动，并更新世界状态。
-- 同一个 world 支持多次 simulation run，适合做对照实验。
-- 每次 run 独立保存日志、事件、记忆、干预、报告和聊天记录。
-- 支持上帝干预、暂停恢复、结构化报告、1v1 角色对话、Report Agent 问答和多 Agent 群聊。
+## Core Capabilities
 
-## 5 步工作流
+- Automatically builds simulation scenes, agent profiles, and a knowledge graph from a world seed.
+- Supports pasting `SKILL.md`-style soul profiles to strengthen agent personality consistency.
+- Lets multiple agents perceive events, think, speak, act, and update the world state day by day.
+- Supports multiple simulation runs under the same world, making comparative experiments easier.
+- Stores logs, events, memories, interventions, reports, and chat records independently for each run.
+- Supports god-mode interventions, pause and resume, structured reports, one-on-one character chat, Report Agent Q&A, and multi-agent group chat.
 
-### Step 1：输入种子
+## 5-Step Workflow
 
-输入世界背景、模拟目标、Agent 数量和推演天数。
+### Step 1: Enter A Seed
 
-![Step 1 种子输入](docs/assets/step1.jpg)
+Enter the world background, simulation goal, number of agents, and simulation days.
 
-### Step 2：构建世界
+![Step 1 seed input](docs/assets/step1.jpg)
 
-系统自动生成世界背景、Agent 档案、知识图谱，并展示该 world 下的推演记录列表。
+### Step 2: Build The World
 
-![Step 2 世界构建结果与推演记录列表](docs/assets/step2.jpg)
+The system automatically generates the world background, agent profiles, and knowledge graph, then shows the simulation run list for that world.
 
-### Step 3：运行模拟
+![Step 2 world build result and run list](docs/assets/step2.jpg)
 
-多 Agent 按天行动，前端通过 SSE 展示推演日志、阶段状态和时间线。
+### Step 3: Run The Simulation
 
-![Step 3 多 Agent 推演日志](docs/assets/step3.jpg)
+Agents act day by day. The frontend displays simulation logs, stage status, and timeline updates through SSE.
 
-### Step 4：生成报告
+![Step 3 multi-agent simulation logs](docs/assets/step3.jpg)
 
-基于当前选中的 run 生成结构化报告，包含故事化叙事、执行摘要、目标达成评估、角色视角、关系变化、指标变化、关键驱动因素和证据映射。
+### Step 4: Generate A Report
 
-![Step 4 结构化报告](docs/assets/step4.jpg)
+Generate a structured report for the selected run, including narrative recap, executive summary, goal assessment, character perspectives, relationship changes, metric changes, key drivers, and evidence mapping.
 
-### Step 5：深度互动
+![Step 4 structured report](docs/assets/step4.jpg)
 
-基于当前选中的 run，与单个角色、Report Agent 或多个 Agent 群聊继续追问。
+### Step 5: Explore Further
 
-![Step 5 角色与报告深度互动](docs/assets/step5-1.jpg)
+Continue asking questions based on the selected run through one-on-one character chat, Report Agent chat, or multi-agent group chat.
 
-![Step 5 多 Agent 群聊](docs/assets/step5-2.jpg)
+![Step 5 character and report interaction](docs/assets/step5-1.jpg)
 
-## 架构概览
+![Step 5 multi-agent group chat](docs/assets/step5-2.jpg)
+
+## Architecture Overview
 
 ```text
 SoulSim/
-├── backend/                 # FastAPI 后端
+├── backend/                 # FastAPI backend
 │   ├── app/
-│   │   ├── api/             # API 路由与管理后台
-│   │   ├── chat/            # 1v1、报告问答、群聊 Agent
-│   │   ├── engine/          # 世界构建与多 Agent 推演循环
-│   │   ├── graph/           # 知识图谱构建与更新
-│   │   ├── llm/             # LLM client 封装
-│   │   ├── report/          # 报告生成
-│   │   └── repositories/    # 数据访问层
-│   └── sql/                 # schema 与 migrations
-├── frontend/                # Next.js 前端
-│   ├── app/                 # App Router 页面
-│   ├── components/          # UI 组件
-│   └── lib/                 # API client 与类型辅助
-├── docs/                    # 系统文档与推广文档
-├── start.sh                 # 一键启动前后端
-└── stop.sh                  # 一键停止前后端
+│   │   ├── api/             # API routes and admin backend
+│   │   ├── chat/            # 1v1, report Q&A, and group-chat agents
+│   │   ├── engine/          # World building and multi-agent simulation loop
+│   │   ├── graph/           # Knowledge graph building and updates
+│   │   ├── llm/             # LLM client wrapper
+│   │   ├── report/          # Report generation
+│   │   └── repositories/    # Data access layer
+│   └── sql/                 # Schema and migrations
+├── frontend/                # Next.js frontend
+│   ├── app/                 # App Router pages
+│   ├── components/          # UI components
+│   └── lib/                 # API client and type helpers
+├── docs/                    # System and promotion docs
+├── start.sh                 # One-command frontend/backend startup
+└── stop.sh                  # One-command frontend/backend shutdown
 ```
 
-核心数据关系：
+Core data relationships:
 
 ```text
 worlds 1 ── N simulation_runs
@@ -81,43 +83,43 @@ simulation_runs 1 ── N events / memories / interventions
 simulation_runs 1 ── N chat_sessions
 ```
 
-## 技术栈
+## Tech Stack
 
-后端：
+Backend:
 
 - Python 3.10
 - FastAPI
 - psycopg 3
 - PostgreSQL + JSONB
 - CAMEL / OpenAI-compatible LLM client
-- SSE 流式输出
+- SSE streaming output
 
-前端：
+Frontend:
 
 - Next.js 16
 - React 19
 - TypeScript
-- 原生 CSS / Tailwind v4 依赖
+- Native CSS / Tailwind v4 dependencies
 - EventSource / fetch
 
-## 本地启动
+## Local Setup
 
-### 1. 配置后端环境变量
+### 1. Configure Backend Environment Variables
 
-后端读取 `backend/.env`：
+The backend reads `backend/.env`:
 
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/soulsim
-LLM_API_KEY=你的 key
+LLM_API_KEY=your key
 LLM_BASE_URL=https://api.openai.com/v1
 LLM_MODEL=gpt-4o-mini
 ```
 
-`LLM_BASE_URL` 支持 OpenAI-compatible 服务。
+`LLM_BASE_URL` supports OpenAI-compatible services.
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
-后端：
+Backend:
 
 ```bash
 cd backend
@@ -125,14 +127,14 @@ python -m venv venv
 ./venv/bin/pip install -r requirements.txt
 ```
 
-前端：
+Frontend:
 
 ```bash
 cd frontend
 npm install
 ```
 
-### 3. 初始化数据库
+### 3. Initialize The Database
 
 ```bash
 psql "$DATABASE_URL" -f backend/sql/schema.sql
@@ -145,36 +147,50 @@ psql "$DATABASE_URL" -f backend/sql/m9_events_event_type.sql
 psql "$DATABASE_URL" -f backend/sql/m10_world_baselines.sql
 ```
 
-### 4. 启动服务
+### 4. Start Services
 
-在项目根目录执行：
+Run from the project root:
 
 ```bash
 ./start.sh
 ```
 
-默认端口：
+Default ports:
 
-- 前端：`http://localhost:3000`
-- 后端：`http://localhost:8000`
-- 健康检查：`http://localhost:8000/health`
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8000`
+- Health check: `http://localhost:8000/health`
 
-停止服务：
+`./start.sh` listens on both local and LAN addresses, then prints the reachable LAN URLs after startup, for example:
+
+```text
+LAN frontend: http://192.168.1.23:3000
+LAN backend: http://192.168.1.23:8000
+```
+
+Devices on the same LAN can open `http://your-machine-ip:3000`. The frontend will request the same IP on port `8000`. To specify the IP or API URL manually:
+
+```bash
+SOULSIM_HOST=192.168.1.23 ./start.sh
+NEXT_PUBLIC_API_BASE=http://192.168.1.23:8000/api ./start.sh
+```
+
+Stop services:
 
 ```bash
 ./stop.sh
 ```
 
-日志位置：
+Logs:
 
 ```text
 logs/backend.log
 logs/frontend.log
 ```
 
-## 重要 API
+## Important APIs
 
-World：
+World:
 
 - `POST /api/worlds`
 - `GET /api/worlds/{world_id}`
@@ -183,20 +199,20 @@ World：
 - `GET /api/worlds/{world_id}/graph`
 - `GET /api/worlds/{world_id}/runs`
 
-Run：
+Run:
 
 - `POST /api/worlds/{world_id}/run`
 - `POST /api/worlds/{world_id}/run/stream`
 - `GET /api/runs/{run_id}`
 - `GET /api/runs/{run_id}/resume/stream`
 
-Report：
+Report:
 
 - `POST /api/runs/{run_id}/report`
 - `POST /api/runs/{run_id}/report/stream`
 - `GET /api/runs/{run_id}/report`
 
-Chat：
+Chat:
 
 - `GET /api/runs/{run_id}/chat-sessions`
 - `POST /api/chat-sessions`
@@ -204,51 +220,51 @@ Chat：
 - `GET /api/chat-sessions/{session_id}/messages`
 - `POST /api/chat-sessions/{session_id}/messages`
 
-## 文档
+## Documentation
 
-- [系统交接文档](docs/SYSTEM_OVERVIEW.md)：面向下一位接手项目的 AI / 工程师，包含架构、数据模型、核心流程、排障入口和后续优先级。
-- [项目推广文档](docs/PROMOTION.md)：面向展示和传播，包含产品定位、核心价值、典型场景、演示流程和截图占位。
+- [System handoff document](docs/SYSTEM_OVERVIEW.md): for the next AI or engineer taking over the project, covering architecture, data model, core flows, troubleshooting entry points, and follow-up priorities.
+- [Promotion document](docs/PROMOTION.md): for product presentation and sharing, covering positioning, core value, typical scenarios, demo flow, and screenshot placeholders.
 
-## 当前成熟度
+## Current Maturity
 
-当前版本已经具备完整 demo 闭环：
+The current version provides a complete demo loop:
 
-- 世界创建与构建
-- Agent 生成与灵魂注入
-- 知识图谱展示
-- 多日模拟推演
-- 多 run 推演记录
-- 上帝干预与恢复
-- 结构化报告
-- 1v1 对话
-- Report Agent 问答
-- 多 Agent 群聊
-- 管理后台基础能力
+- World creation and building
+- Agent generation and soul injection
+- Knowledge graph display
+- Multi-day simulation runs
+- Multiple run records
+- God-mode interventions and resume
+- Structured reports
+- One-on-one chat
+- Report Agent Q&A
+- Multi-agent group chat
+- Basic admin backend
 
-## 已知边界
+## Known Boundaries
 
-- 老 world 如果是在 `world_baselines` 引入前构建的，启动新 run 会返回 `world baseline not found`。这是为了避免从历史末态错误重跑。
-- 当前图谱仍是 world 当前态，不是严格的 run-level graph snapshot。历史 run 的日志、事件、报告和聊天已按 run 隔离，但图谱回放还不是完整历史快照。
-- `resume_run_stream` 支持 running 重连，但后续仍建议增加 run-level worker lock，避免同一 run 被重复 worker 处理。
+- Older worlds built before `world_baselines` was introduced will return `world baseline not found` when starting a new run. This prevents rerunning from an incorrect historical end state.
+- The current graph is still the world's current-state graph, not a strict run-level graph snapshot. Logs, events, reports, and chats are isolated by run, but graph replay is not yet a complete historical snapshot.
+- `resume_run_stream` supports reconnecting to a running simulation, but a run-level worker lock is still recommended to avoid duplicate workers processing the same run.
 
 ## Roadmap
 
-短期：
+Short term:
 
-- 增加历史 run 的图谱快照回放。
-- 增强不同 run 的对比视图。
-- 提供旧 world baseline 捕获工具。
-- 补充自动化测试和 demo seed。
+- Add historical run graph snapshot replay.
+- Improve comparison views across runs.
+- Provide a baseline capture tool for old worlds.
+- Add automated tests and demo seeds.
 
-中期：
+Medium term:
 
-- 支持更多干预类型。
-- 支持指标可视化和关系变化动画。
-- 支持导出完整研究报告。
-- 支持模板化场景库。
+- Support more intervention types.
+- Support metric visualizations and relationship-change animations.
+- Support exporting complete research reports.
+- Support templated scenario libraries.
 
-长期：
+Long term:
 
-- 形成可复用的复杂系统模拟平台。
-- 支持组织决策、社会议题、产品策略、教育研究、剧情创作等多领域场景。
-- 提供 Agent 灵魂库和世界协议库。
+- Become a reusable complex-system simulation platform.
+- Support organization decisions, social issues, product strategy, education research, story creation, and more domains.
+- Provide an agent soul library and world protocol library.

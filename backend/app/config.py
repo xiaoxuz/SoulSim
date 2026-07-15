@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     llm_base_url: str = "https://api.openai.com/v1"
     llm_model: str = "gpt-4o-mini"
+    cors_allow_origin_regex: str = r"http://(localhost|127\.0\.0\.1|0\.0\.0\.0|10\..+|172\.(1[6-9]|2[0-9]|3[0-1])\..+|192\.168\..+)(:[0-9]+)?"
 
 
 settings = Settings()

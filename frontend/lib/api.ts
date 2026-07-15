@@ -1,4 +1,6 @@
-const BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000/api";
+const BASE =
+  process.env.NEXT_PUBLIC_API_BASE ||
+  (typeof window !== "undefined" ? `http://${window.location.hostname}:8000/api` : "http://localhost:8000/api");
 
 async function req(path: string, opts?: RequestInit) {
   const res = await fetch(`${BASE}${path}`, {

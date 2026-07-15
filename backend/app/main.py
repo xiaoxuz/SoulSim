@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
 from app.api.admin import router as admin_router
+from app.config import settings
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,6 +19,7 @@ app = FastAPI(title="SoulSim", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
+    allow_origin_regex=settings.cors_allow_origin_regex,
     allow_methods=["*"],
     allow_headers=["*"],
 )
